@@ -7,8 +7,14 @@ import CustomButton from "../../Components/CustomButton";
 import Accordion from 'react-bootstrap/Accordion';
 import CustomInput from "../../Components/CustomInput";
 import './style.css'
+import { Link, useNavigate } from "react-router-dom";
 
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 export const ChapterDetails = () => {
+    const [leadData, setLeadData] = useState({});
+    const [editModal, setEditModal] = useState(false);
 
     const { id } = useParams();
 
@@ -67,6 +73,7 @@ export const ChapterDetails = () => {
                 console.log(data)
 
                 setData(data.data)
+                setFormData(data.data)
 
             })
             .catch((error) => {
@@ -90,7 +97,7 @@ export const ChapterDetails = () => {
         }
 
         console.log(formData)
-        
+
         // Make the fetch request
         fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_add/${id}`, {
             method: 'POST',
@@ -123,6 +130,76 @@ export const ChapterDetails = () => {
             })
     }
 
+    const [chapetrid, setChapterid] = useState()
+
+
+    const handleEdit = (e) => {
+        console.log("chapetrid " , chapetrid)
+        e.preventDefault();
+ 
+        const LogoutData = localStorage.getItem('login');
+        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_update/${chapetrid}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+                body: JSON.stringify(leadData)
+            },
+        )
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                editDetailData(chapetrid)
+                setEditModal(false)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error);
+            })
+    }
+
+    const editDetailData = (bookid) => {
+        console.log("editDetailData", bookid)
+        setChapterid(bookid)
+        console.log("editDetailData", bookid)
+        const LogoutData = localStorage.getItem('login');
+        document.title = 'Mt Records | Book Chapters Detail';
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_view/${id}/${bookid}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(data)
+
+                setLeadData(data?.data)
+ 
+
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error);
+            })
+    }
+
+    useEffect(() => {
+        editDetailData()
+    }, []);
     return (
         <>
             <DashboardLayout>
@@ -183,7 +260,15 @@ export const ChapterDetails = () => {
                                             <Accordion.Item eventKey={index}>
                                                 <Accordion.Header>{`Chapter ${index + 1}`}</Accordion.Header>
                                                 <Accordion.Body>
-                                                    <h3 className="text-capitalize">{item?.title}</h3>
+                                                    <div className="chapeditz d-flex">
+                                                        <h3 className="text-capitalize">{item?.title}</h3>
+                                                        <p>
+                                                            <Link onClick={() => {
+                                                                setEditModal(true)
+                                                                editDetailData(item.id)
+                                                            }} className="chaptableAction"><FontAwesomeIcon icon={faEdit} className="chaptableActionIcon" />Edit</Link>
+                                                        </p>
+                                                    </div>
                                                     <p> {item?.description}</p>
                                                 </Accordion.Body>
                                             </Accordion.Item>
@@ -231,7 +316,65 @@ export const ChapterDetails = () => {
                     </div>
                 </div>
 
+                <CustomModal show={editModal} close={() => { setEditModal(false) }} heading="Edit Book Chapters" >
 
+
+                    <CustomInput
+                        label="Book Title"
+                        type="text"
+                        placeholder="Current Month Target"
+                        required
+                        name="title"
+                        labelClass='mainLabel'
+                        inputClass='mainInput'
+
+                        value={leadData?.title}
+                        onChange={(event) => {
+                            setLeadData({ ...leadData, title: event.target.value });
+
+                        }}
+
+
+                    />
+                    <CustomInput
+                        label="Book Descripction"
+                        type="text"
+                        placeholder="book descripction"
+                        required
+                        name="description"
+                        labelClass='mainLabel'
+                        inputClass='mainInput'
+
+                        value={leadData.description}
+                        onChange={(event) => {
+                            setLeadData({ ...leadData, description: event.target.value });
+                        }}
+
+
+                    />
+                    <CustomInput
+                        label="Book Price
+    
+    
+    "
+                        type="number"
+                        placeholder="book price"
+                        required
+                        name="price"
+                        labelClass='mainLabel'
+                        inputClass='mainInput'
+
+                        value={leadData.price}
+                        onChange={(event) => {
+                            setLeadData({ ...leadData, price: event.target.value });
+
+                        }}
+F                    />
+
+
+
+                    <CustomButton variant='primaryButton' text='Edit' type='button' onClick={handleEdit} />
+                </CustomModal>
                 <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Chapter Added Successfully.' />
             </DashboardLayout>
         </>

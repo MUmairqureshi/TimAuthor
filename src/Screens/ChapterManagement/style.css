@@ -48,3 +48,16 @@
 
 
 
+.chapeditz.d-flex {
+    justify-content: space-between;
+    text-decoration: none;
+}
+a.chaptableAction {
+    text-decoration: none;
+    color: black;
+}
+
+a.chaptableAction:hover {
+    /* text-decoration: none; */
+    color: black;
+}

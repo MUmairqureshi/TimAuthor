@@ -175,7 +175,10 @@ export const EditCategory = () => {
                                                 <CustomInput
                                                     label='Upload Product Image'
                                                     required
-                                                    id='file'
+                                                    
+
+
+                                                    
                                                     type='file'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
