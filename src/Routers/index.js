@@ -1,5 +1,6 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-
+// AdminSignup
+import AdminSignup from "../Screens/Auth/signup";
 import AdminLogin from "../Screens/Auth/Login";
 import ForgetPassword from "../Screens/Auth/ForgetPassword";
 import ForgetPassword2 from "../Screens/Auth/ForgetPassword2";
@@ -65,6 +66,8 @@ export default function AdminRouter() {
     <BrowserRouter basename="/TimAuthor">
       <Routes>
         <Route path="/" element={<AdminLogin />} />
+        <Route path="/sign_up" element={<AdminSignup />} />
+         
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/forget-password2" element={<ForgetPassword2 />} />

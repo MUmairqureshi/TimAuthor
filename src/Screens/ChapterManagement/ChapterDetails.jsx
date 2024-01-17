@@ -20,7 +20,7 @@ export const ChapterDetails = () => {
 
     const base_url = 'https://custom.mystagingserver.site/Tim-WDLLC/public/'
 
-    const [data, setData] = useState({});
+    const [datas, setDatas] = useState({});
 
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
@@ -72,7 +72,7 @@ export const ChapterDetails = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data)
 
-                setData(data.data)
+                setDatas(data.data)
                 setFormData(data.data)
 
             })
@@ -81,10 +81,14 @@ export const ChapterDetails = () => {
                 console.log(error);
             })
     }
+
+
     useEffect(() => {
         chapterData()
+
     }, []);
-    console.log(data)
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -92,8 +96,8 @@ export const ChapterDetails = () => {
 
         // Create a new FormData object
         const formDataMethod = new FormData();
-        for (const key in formData) {
-            formDataMethod.append(key, formData[key]);
+        for (const key in leadData) {
+            formDataMethod.append(key, leadData[key]);
         }
 
         console.log(formData)
@@ -132,13 +136,22 @@ export const ChapterDetails = () => {
 
     const [chapetrid, setChapterid] = useState()
 
+    const chapobj = {
+        data: {
+            description: leadData?.description,
+            chapter_id: chapetrid,
+            price: leadData?.price,
+            title: leadData?.title
+        }
 
+    }
+ 
     const handleEdit = (e) => {
-        console.log("chapetrid ", chapetrid)
         e.preventDefault();
 
+
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_update/${chapetrid}`,
+        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_update/${id}`,
             {
                 method: 'POST',
                 headers: {
@@ -146,7 +159,7 @@ export const ChapterDetails = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${LogoutData}`
                 },
-                body: JSON.stringify(leadData)
+                body: JSON.stringify(chapobj)
             },
         )
             .then((response) => {
@@ -185,10 +198,11 @@ export const ChapterDetails = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+
 
                 setLeadData(data?.data)
-                setFormData(data)
+
+                // setFormData(datas?.data)
 
             })
             .catch((error) => {
@@ -200,6 +214,9 @@ export const ChapterDetails = () => {
     useEffect(() => {
         editDetailData()
     }, []);
+
+    console.log('abc', leadData)
+
     return (
         <>
             <DashboardLayout>
@@ -217,9 +234,9 @@ export const ChapterDetails = () => {
                             {/* <div className="row mb-3 justify-content-end">
                 <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
                   <button onClick={() => {
-                    data?.status ? setShowModal(true) : setShowModal3(true)
-                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {data?.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${data?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{data?.status == 1 ? 'Active' : 'Inactive'}</span>
+                    datas?.status ? setShowModal(true) : setShowModal3(true)
+                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {datas?.status ? 'Inactive' : 'Active'}</button>
+                  <span className={`statusBadge ${datas?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{datas?.status == 1 ? 'Active' : 'Inactive'}</span>
                 </div>
               </div> */}
 
@@ -228,15 +245,15 @@ export const ChapterDetails = () => {
                                 <div className="col-md-6 mb-4">
 
                                     <div className="productImage">
-                                        <img src={base_url + data?.image} />
+                                        <img src={base_url + datas?.image} />
                                     </div>
                                 </div>
                                 <div className="col-md-6 mb-4">
                                     <div className="productInfo">
-                                        <h3 className="text-capitalize">{data?.name}</h3>
-                                        {/* <h4><span className="font-weight-bold">Price:</span>{` $ ${data?.price}`}</h4> */}
-                                        <p>{data?.description}</p>
-                                        <p><span className="font-weight-bold">Category:</span> <span>{data?.category?.name}</span></p>
+                                        <h3 className="text-capitalize">{datas?.name}</h3>
+                                        {/* <h4><span className="font-weight-bold">Price:</span>{` $ ${datas?.price}`}</h4> */}
+                                        <p>{datas?.description}</p>
+                                        <p><span className="font-weight-bold">Category:</span> <span>{datas?.category?.name}</span></p>
 
                                     </div>
                                 </div>
@@ -256,7 +273,7 @@ export const ChapterDetails = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <Accordion defaultActiveKey="0">
-                                        {data?.chapters && data?.chapters.map((item, index) => (
+                                        {datas?.chapters && datas?.chapters.map((item, index) => (
                                             <Accordion.Item eventKey={index}>
                                                 <Accordion.Header>{`Chapter ${index + 1}`}</Accordion.Header>
                                                 <Accordion.Body>
@@ -331,7 +348,12 @@ export const ChapterDetails = () => {
 
                         value={leadData?.title}
                         onChange={(event) => {
-                            setLeadData({ ...leadData, title: event.target.value });
+                            setLeadData({
+                                ...leadData,
+                                title: event.target.value,
+                                chapetr_id: chapetrid
+
+                            });
 
                         }}
 
@@ -348,7 +370,7 @@ export const ChapterDetails = () => {
 
                         value={leadData.description}
                         onChange={(event) => {
-                            setLeadData({ ...leadData, description: event.target.value });
+                            setLeadData({ ...leadData, description: event.target.value, chapetr_id: chapetrid });
                         }}
 
 
@@ -367,7 +389,7 @@ export const ChapterDetails = () => {
 
                         value={leadData.price}
                         onChange={(event) => {
-                            setLeadData({ ...leadData, price: event.target.value });
+                            setLeadData({ ...leadData, price: event.target.value, chapetr_id: chapetrid });
 
                         }}
                         F />
