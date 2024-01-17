@@ -1,3 +1,5 @@
+ 
+
 import { useState, useEffect } from "react";
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
@@ -11,8 +13,10 @@ export const AddBook = () => {
     const [showModal, setShowModal] = useState(false);
     const [genre, setGenre] = useState({});
     const [type, setType] = useState(false);
+    const [isPrice, setIsPrice] = useState(false);
     const [formData, setFormData] = useState({
         image: '', // Initialize image as an empty string
+        // model_type: ''
     });
 
     const bookType = [
@@ -25,6 +29,7 @@ export const AddBook = () => {
             name: 'Novel'
         }
     ]
+ 
 
     const fetchCatories = () => {
         const LogoutData = localStorage.getItem('login');
@@ -138,12 +143,19 @@ export const AddBook = () => {
         console.log(formData)
     };
 
+    // const handleChecked = (event) => {
+    //     const { name, value, checked } = event.target;
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    //     console.log(formData)
+    // }
 
 
 
     const LogoutData = localStorage.getItem('login');
-
-
+ 
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -213,19 +225,32 @@ export const AddBook = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            <div className="col-md-6 mb-4">
-                                                <CustomInput
-                                                    label='Enter price'
-                                                    required
-                                                    id='price'
-                                                    type='number'
-                                                    placeholder='Enter price'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="price"
-                                                    value={formData.price}
-                                                    onChange={handleChange}
-                                                />
+                                            <div className="align-items-lg-center col-md-6 d-md-flex gap-15 mb-4">
+                                                <div className="radioType">
+                                                    <label for="chapter" onClick={() => { setIsPrice(false) }}>
+                                                        <input id="chapter" type="radio" value="1" name="model_type" onChange={handleChange} /> Price Per Chapter 
+                                                    </label>
+                                                    <br />
+                                                    <label for="book" onClick={() => { setIsPrice(true) }}>
+                                                        <input id="book" type="radio" value="2" name="model_type" onChange={handleChange} /> Book Price
+                                                    </label>
+
+                                                </div>
+                                                {
+                                                    isPrice && (
+                                                        <CustomInput
+                                                            label='Enter price'
+                                                            id='price'
+                                                            type='number'
+                                                            placeholder='Enter price'
+                                                            labelClass='mainLabel'
+                                                            inputClass='mainInput'
+                                                            name="price"
+                                                            value={formData.price}
+                                                            onChange={handleChange}
+                                                        />
+                                                    )
+                                                }
                                             </div>
 
                                             <div className="col-md-6 mb-4">
@@ -270,7 +295,7 @@ export const AddBook = () => {
                                             </div>
                                             <div className="col-md-6 mb-4">
                                                 <CustomInput
-                                                    label='Upload Product Image'
+                                                    label='Upload Book Cover'
                                                     required
                                                     id='file'
                                                     type='file'

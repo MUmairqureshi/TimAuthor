@@ -134,9 +134,9 @@ export const ChapterDetails = () => {
 
 
     const handleEdit = (e) => {
-        console.log("chapetrid " , chapetrid)
+        console.log("chapetrid ", chapetrid)
         e.preventDefault();
- 
+
         const LogoutData = localStorage.getItem('login');
         fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_update/${chapetrid}`,
             {
@@ -188,7 +188,7 @@ export const ChapterDetails = () => {
                 console.log(data)
 
                 setLeadData(data?.data)
- 
+                setFormData(data)
 
             })
             .catch((error) => {
@@ -269,6 +269,7 @@ export const ChapterDetails = () => {
                                                             }} className="chaptableAction"><FontAwesomeIcon icon={faEdit} className="chaptableActionIcon" />Edit</Link>
                                                         </p>
                                                     </div>
+                                                    <h3 className="text-capitalize">{item?.price}</h3>
                                                     <p> {item?.description}</p>
                                                 </Accordion.Body>
                                             </Accordion.Item>
@@ -369,7 +370,7 @@ export const ChapterDetails = () => {
                             setLeadData({ ...leadData, price: event.target.value });
 
                         }}
-F                    />
+                        F />
 
 
 
@@ -380,4 +381,3 @@ F                    />
         </>
     );
 };
-
