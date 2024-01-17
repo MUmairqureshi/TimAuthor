@@ -93,7 +93,7 @@ export const ChapterDetails = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         document.querySelector('.loaderBox').classList.remove("d-none");
-
+        chapterData()
         // Create a new FormData object
         const formDataMethod = new FormData();
         for (const key in leadData) {
@@ -127,6 +127,7 @@ export const ChapterDetails = () => {
                     title: '',
                     description: ''
                 })
+ 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
