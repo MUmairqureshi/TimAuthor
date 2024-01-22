@@ -173,12 +173,12 @@ export const ChapterManagement = () => {
                 </div>
                 <div className="row mb-3">
                   <div className="col-md-12 d-flex gap-15">
-                    <CustomButton text="Books" variant={novel ? '' : 'primaryButton'} onClick={() => {
+                    <CustomButton text="Web Novels" variant={novel ? '' : 'primaryButton'} onClick={() => {
                       setNovel(false);
                       bookData()
                     }}
                     />
-                    <CustomButton text="Novels" variant={novel ? 'primaryButton' : ''} onClick={() => {
+                    <CustomButton text="Light Novels" variant={novel ? 'primaryButton' : ''} onClick={() => {
                       setNovel(true);
                       NovelData()
                     }} />

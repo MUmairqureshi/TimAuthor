@@ -151,7 +151,7 @@ export const ChapterDetails = () => {
 
 
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/bookchapter_update/${id}`,
+        fetch(`https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/bookchapter_update_new/${id}`,
             {
                 method: 'POST',
                 headers: {
