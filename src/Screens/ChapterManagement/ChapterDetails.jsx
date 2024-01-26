@@ -94,10 +94,9 @@ export const ChapterDetails = () => {
         e.preventDefault();
         document.querySelector('.loaderBox').classList.remove("d-none");
 
-        // Create a new FormData object
         const formDataMethod = new FormData();
-        for (const key in leadData) {
-            formDataMethod.append(key, leadData[key]);
+        for (const key in formData) {
+            formDataMethod.append(key, formData[key]);
         }
 
         console.log(formData)
@@ -145,7 +144,7 @@ export const ChapterDetails = () => {
         }
 
     }
- 
+
     const handleEdit = (e) => {
         e.preventDefault();
 
@@ -286,7 +285,10 @@ export const ChapterDetails = () => {
                                                             }} className="chaptableAction"><FontAwesomeIcon icon={faEdit} className="chaptableActionIcon" />Edit</Link>
                                                         </p>
                                                     </div>
-                                                    <h3 className="text-capitalize">{item?.price}</h3>
+                                                   <div className="d-flex">
+                                                   Price:  Mana 
+                                                     <p className="text-capitalize ps-1 text-success"> {item?.price}</p>
+                                                     </div>
                                                     <p> {item?.description}</p>
                                                 </Accordion.Body>
                                             </Accordion.Item>
@@ -310,6 +312,23 @@ export const ChapterDetails = () => {
                                                     inputClass='mainInput'
                                                     name="title"
                                                     value={formData.title}
+                                                    onChange={handleChange}
+                                                />
+
+
+
+
+
+                                                <CustomInput
+                                                    label='Chapter Price'
+                                                    required
+                                                    id='title'
+                                                    type='text'
+                                                    placeholder='Enter  Price'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="price"
+                                                    value={formData.price}
                                                     onChange={handleChange}
                                                 />
 
