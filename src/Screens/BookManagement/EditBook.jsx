@@ -8,6 +8,7 @@ import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
 export const EditBook = () => {
     const { id } = useParams();
+    const [isPrice, setIsPrice] = useState(false);
     const [categories, setCategories] = useState({});
     const [unit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -16,7 +17,7 @@ export const EditBook = () => {
     const [formData, setFormData] = useState({
         image: '', // Initialize image as an empty string
     });
-    const Base_url = 'https://custom.mystagingserver.site/Tim-WDLLC/public/'    
+    const Base_url = 'https://custom.mystagingserver.site/Tim-WDLLC/public/'
     console.log(formData.image)
 
     const fetchCatories = () => {
@@ -75,10 +76,11 @@ export const EditBook = () => {
             })
     }
 
+
     const GenreData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/Tim-WDLLC/public/api/author/genre_listing',
+        fetch('https://custom.mystagingserver.site/Tim-WDLLC/public/api/genre_listing',
             {
                 method: 'GET',
                 headers: {
@@ -95,7 +97,9 @@ export const EditBook = () => {
             .then((data) => {
                 console.log(data.data)
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setGenre(data.data);
+                console.log("setGenre", data)
+
+                setGenre(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -104,6 +108,7 @@ export const EditBook = () => {
 
     }
 
+    console.log("setGenre", genre)
 
     const fetechBookData = () => {
         const LogoutData = localStorage.getItem('login');
@@ -149,7 +154,11 @@ export const EditBook = () => {
         GenreData()
         bookType == 1 ? fetechBookData() : NovelCategoriesList()
     }, [])
-
+    
+    useEffect(() => {
+        setIsPrice(!!formData.price);
+      }, [formData.price]);
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevData) => ({
@@ -175,12 +184,12 @@ export const EditBook = () => {
 
 
 
-    
+
     // const filehandleChange = (event) => {
     //     const file = event.target.files[0];
 
     //     if (file) {
- 
+
     //         const fileName = file;
     //         setFormData((prevData) => ({
     //             ...prevData,
@@ -263,7 +272,67 @@ export const EditBook = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            <div className="col-md-6 mb-4">
+
+                                            {/* <div className="align-items-lg-center col-md-6 d-md-flex gap-15 mb-4">
+                                                <div className="radioType">
+                                                    <label for="chapter" onClick={() => { setIsPrice(false) }}>
+                                                        <input id="chapter" type="radio" value="1" name="model_type" onChange={handleChange} /> Price Per Chapter
+                                                    </label>
+                                                    <br />
+                                                    <label for="book" onClick={() => { setIsPrice(true) }}>
+                                                        <input id="book" type="radio" value="2" name="model_type" onChange={handleChange} /> Book Price
+                                                    </label>
+
+                                                </div>
+                                                {
+                                                    isPrice && (
+                                                        <CustomInput
+                                                            label='Enter price'
+                                                            id='price'
+                                                            type='number'
+                                                            placeholder='Enter price'
+                                                            labelClass='mainLabel'
+                                                            inputClass='mainInput'
+                                                            name="price"
+                                                            value={formData.price}
+                                                            onChange={handleChange}
+                                                        />
+                                                    )
+                                                }
+                                            </div> */}
+
+                                            <div className="align-items-lg-center col-md-6 d-md-flex gap-15 mb-4">
+                                                <div className="radioType">
+                                                    <label for="chapter" onClick={() => { setIsPrice(false) }}>
+                                                        <input id="chapter" type="radio" value="1" name="model_type" onChange={handleChange} checked={!formData.price} /> Price Per Chapter
+                                                    </label>
+                                                    <br />
+                                                    <label for="book" onClick={() => { setIsPrice(true) }}>
+                                                        <input id="book" type="radio" value="2" name="model_type" onChange={handleChange} checked={formData.price} /> Book Price
+                                                    </label>
+                                                </div>
+                                                {
+                                                    isPrice && (
+                                                        <CustomInput
+                                                            label='Enter price'
+                                                            id='price'
+                                                            type='number'
+                                                            placeholder='Enter price'
+                                                            labelClass='mainLabel'
+                                                            inputClass='mainInput'
+                                                            name="price"
+                                                            value={formData.price}
+                                                            onChange={handleChange}
+                                                        />
+                                                    )
+                                                }
+                                            </div>
+
+
+
+
+
+                                            {/* <div className="col-md-6 mb-4">
                                                 <CustomInput
                                                     label='Enter price'
                                                     required
@@ -276,7 +345,7 @@ export const EditBook = () => {
                                                     value={formData.price}
                                                     onChange={handleChange}
                                                 />
-                                            </div>
+                                            </div> */}
                                             {/* <div className="col-md-6 mb-4">
                                                     <SelectBox
                                                         selectClass="mainInput"
@@ -333,7 +402,7 @@ export const EditBook = () => {
                                             <div className="col-md-6 mb-4">
                                                 <CustomInput
                                                     label='Upload Product Image'
-                                                     
+
                                                     id='file'
                                                     type='file'
                                                     labelClass='mainLabel'
