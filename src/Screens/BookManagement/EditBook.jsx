@@ -235,7 +235,7 @@ export const EditBook = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
-    };
+    }
 
 
 
