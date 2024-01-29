@@ -154,23 +154,42 @@ export const EditBook = () => {
         GenreData()
         bookType == 1 ? fetechBookData() : NovelCategoriesList()
     }, [])
-    
+
     useEffect(() => {
         setIsPrice(!!formData.price);
-      }, [formData.price]);
-    
+    }, [formData.price]);
+
+
+
+
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    //     console.log(formData)
+    // };
+
+
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        console.log(formData);
+
+        // If "Book Price" is selected, switch to "Price Per Chapter"
+        // if (name === "price") {
+        //     setIsPrice(false);
+        // }
     };
 
     const filehandleChange = (event) => {
         const file = event.target.files[0];
-        // console.log(file.name)
+
         if (file) {
             const fileName = file;
             setFormData((prevData) => ({
@@ -302,7 +321,7 @@ export const EditBook = () => {
                                             </div> */}
 
                                             <div className="align-items-lg-center col-md-6 d-md-flex gap-15 mb-4">
-                                                <div className="radioType">
+                                                {/* <div className="radioType">
                                                     <label for="chapter" onClick={() => { setIsPrice(false) }}>
                                                         <input id="chapter" type="radio" value="1" name="model_type" onChange={handleChange} checked={!formData.price} /> Price Per Chapter
                                                     </label>
@@ -310,7 +329,18 @@ export const EditBook = () => {
                                                     <label for="book" onClick={() => { setIsPrice(true) }}>
                                                         <input id="book" type="radio" value="2" name="model_type" onChange={handleChange} checked={formData.price} /> Book Price
                                                     </label>
+                                                </div> */}
+                                                <div className="radioType">
+                                                    <label htmlFor="chapter" onClick={() => { setIsPrice(false) }}>
+                                                        <input id="chapter" type="radio" value="1" name="model_type" onChange={handleChange} checked={formData.price} /> Price Per Chapter
+                                                    </label>
+                                                    <br />
+                                                    <label htmlFor="book" onClick={() => { setIsPrice(true) }}>
+                                                        <input id="book" type="radio" value="2" name="model_type" onChange={handleChange} checked={formData.price} /> Book Price
+                                                    </label>
                                                 </div>
+
+
                                                 {
                                                     isPrice && (
                                                         <CustomInput
@@ -408,7 +438,7 @@ export const EditBook = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="image"
-                                                    // value={formData.image}
+
                                                     onChange={filehandleChange}
                                                 />
 
